@@ -1,1 +1,0 @@
-g++ ABC/Contest/ABC436/ABC436_C.cpp -o a.out && ./a.out < ./input.txt

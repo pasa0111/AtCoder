@@ -5,3 +5,4 @@
 /.vscode/*
 !/.vscode/cpp.code-snippets
 **/.DS_Store
+*tempCodeRunnerFile*
