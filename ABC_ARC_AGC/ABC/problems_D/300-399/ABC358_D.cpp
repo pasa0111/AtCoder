@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <stack>
+#include <set>
+#include <map>
+#include <queue>
+#include <cmath>
+#include <iomanip>
+#include <bitset>
+#include <cctype>
+#include <atcoder/all>
+
+using namespace atcoder;
+using namespace std;
+#define ll long long
+#define rep(i,e) for(ll i = 0; i < e; i++)
+#define vecall(vec) vec.begin(),vec.end()
+#define vecin(vec) for(ll i = 0, sizesizesize = vec.size(); i < sizesizesize; i++){cin >> vec.at(i);}
+#define sumvecin(vec) for(ll i = 0, sizesizesize = vec.size(); i < sizesizesize; i++){cin >> vec.at(i); if(i > 0) vec[i] += vec[i-1];}
+#define REVERSE(vec) reverse(vecall(vec))
+#define SORT(vec) sort(vecall(vec))
+#define RSORT(vec) SORT(vec); REVERSE(vec)
+#define MP make_pair
+#define MT make_tuple
+
+template <typename T, typename U> ostream& operator<<(ostream& os, const pair<T, U>& p){os << "(" << p.first << ", " << p.second << ")";return os;}
+template <typename T, typename U> pair<T, U> operator+(const pair<T, U> & l, const pair<T, U> & r){return {l.first + r.first, l.second + r.second};}
+
+constexpr char el = '\n';
+
+/*
+g++acl template.cpp -o a.out && ./a.out < ./input.txt
+*/
+
+
+void yesno(bool b){
+    if(b) cout << "Yes" << endl;
+    if(!b) cout << "No" << endl;
+}
+
+int main(){
+    ll n,m;
+    cin >> n >> m;
+    vector<ll> A(n),B(m);
+    vecin(A); vecin(B);
+    SORT(A); SORT(B);
+    int a = 0, b = 0;
+    ll sum = 0;
+    while(b < m){
+        while(a < n && A[a] < B[b])a++;
+        if(a == n){
+            sum = -1;
+            break;
+        }
+        if(a < n) sum += A[a];
+        a++;
+        b++;
+    }
+    cout << sum << endl;
+}

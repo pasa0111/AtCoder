@@ -1,2 +1,7 @@
-*
-!.gitignore
+/*
+!/.gitignore
+!/ABC_ARC_AGC/
+!/.vscode/
+/.vscode/*
+!/.vscode/cpp.code-snippets
+**/.DS_Store

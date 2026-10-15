@@ -1,0 +1,1 @@
+g++acl ABC/problems_D/401-500/ABC427_D.cpp -o a.out && ./a.out < ./input.txt
