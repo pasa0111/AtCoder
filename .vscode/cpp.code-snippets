@@ -17,6 +17,13 @@
 
 
 
+
+
+
+
+
+
+
 "Smallest Prime Factor (SPF)": {
     "prefix": "spf",
     "body": [
@@ -38,7 +45,14 @@
     "description": "最小素因数(SPF)の前計算"
   },
 
-	
+
+
+
+
+
+
+
+
 
 	"AtCoder DSU": {
 		"prefix": "dsu",
@@ -101,6 +115,111 @@
 		"description": "dsu"
 	},
 
+
+
+
+
+  
+
+
+
+
+  "Weighted DSU (ACL Style)": {
+      "prefix": "wdsu",
+      "body": [
+        "namespace atcoder {",
+        "template <class T>",
+        "struct weighted_dsu {",
+        "  public:",
+        "    weighted_dsu() : _n(0) {}",
+        "    weighted_dsu(int n) : _n(n), parent_or_size(n, -1), diff_weight(n, 0) {}",
+        "",
+        "    // a から見て b が重み w になるように結合する",
+        "    int merge(int a, int b, T w) {",
+        "        assert(0 <= a && a < _n);",
+        "        assert(0 <= b && b < _n);",
+        "        int x = leader(a), y = leader(b);",
+        "        if (x == y) return x;",
+        "",
+        "        // 根同士の相対的な重みを計算",
+        "        T w_x_to_y = w + weight(a) - weight(b);",
+        "",
+        "        if (-parent_or_size[x] < -parent_or_size[y]) {",
+        "            std::swap(x, y);",
+        "            w_x_to_y = -w_x_to_y;",
+        "        }",
+        "        parent_or_size[x] += parent_or_size[y];",
+        "        parent_or_size[y] = x;",
+        "        diff_weight[y] = w_x_to_y;",
+        "        return x;",
+        "    }",
+        "",
+        "    bool same(int a, int b) {",
+        "        assert(0 <= a && a < _n);",
+        "        assert(0 <= b && b < _n);",
+        "        return leader(a) == leader(b);",
+        "    }",
+        "",
+        "    int leader(int a) {",
+        "        assert(0 <= a && a < _n);",
+        "        if (parent_or_size[a] < 0) return a;",
+        "        int r = leader(parent_or_size[a]);",
+        "        diff_weight[a] += diff_weight[parent_or_size[a]]; // 経路圧縮のついでに重みを累積",
+        "        return parent_or_size[a] = r;",
+        "    }",
+        "",
+        "    // 根からの絶対的な重みを取得する関数",
+        "    T weight(int a) {",
+        "        assert(0 <= a && a < _n);",
+        "        leader(a); // 事前に経路圧縮",
+        "        return diff_weight[a];",
+        "    }",
+        "",
+        "    // aとbが連結のとき aから見たbの相対的な距離を返す",
+        "    T diff(int a, int b) {",
+        "        assert(same(a, b));",
+        "        return weight(b) - weight(a);",
+        "    }",
+        "",
+        "    long long size(int a) {",
+        "        assert(0 <= a && a < _n);",
+        "        return (long long)(-parent_or_size[leader(a)]);",
+        "    }",
+        "",
+        "    std::vector<std::vector<int>> groups() {",
+        "        std::vector<int> leader_buf(_n), group_size(_n);",
+        "        for (int i = 0; i < _n; i++) {",
+        "            leader_buf[i] = leader(i);",
+        "            group_size[leader_buf[i]]++;",
+        "        }",
+        "        std::vector<std::vector<int>> result(_n);",
+        "        for (int i = 0; i < _n; i++) {",
+        "            result[i].reserve(group_size[i]);",
+        "        }",
+        "        for (int i = 0; i < _n; i++) {",
+        "            result[leader_buf[i]].push_back(i);",
+        "        }",
+        "        result.erase(",
+        "            std::remove_if(result.begin(), result.end(),",
+        "                           [&](const std::vector<int>& v) { return v.empty(); }),",
+        "            result.end());",
+        "        return result;",
+        "    }",
+        "",
+        "  private:",
+        "    int _n;",
+        "    std::vector<int> parent_or_size;",
+        "    std::vector<T> diff_weight; // 親ノードとの相対的な重みを記録",
+        "};",
+        "}",
+        "template <class T> using wdsu = atcoder::weighted_dsu<T>;",
+      "// wdsu<ll> uf(n)",
+      "// diff(x,y)  xから見たyの位置",
+      "// weight(x)  根からxの距離",
+      "// merge(x,y,w)  xから見てyの位置がwになるように結合"
+      ],
+      "description": "AtCoder Library (ACL) スタイルに準拠した重み付きUnion-Find"
+    },
 
 
 
@@ -451,9 +570,6 @@
 
 
 
-
-
-
 "AtCoder Fenwick Tree (Custom)": {
     "prefix": "fenwick",
     "body": [
@@ -509,6 +625,8 @@
     ],
     "description": "AtCoder Library: Fenwick Tree (with set/get)"
   },
+
+
 
 
 
@@ -574,6 +692,14 @@
   },
 
 
+
+
+
+
+
+
+
+
     "AtCoder dynamic_modint": {
         "prefix": "dmint",
         "body": [
@@ -631,10 +757,6 @@
         ],
         "description": ""
     },
-
-
-
-
 
 
 
@@ -787,6 +909,10 @@
 
 
 
+
+
+
+
   "SCC (Strongly Connected Components)": {
     "prefix": "scc",
     "body": [
@@ -864,107 +990,6 @@
     ],
     "description": "強連結成分分解 (SCC) - ACL準拠ベース"
   },
-
-
-
-
-"Weighted DSU (ACL Style)": {
-    "prefix": "wdsu",
-    "body": [
-      "namespace atcoder {",
-      "template <class T>",
-      "struct weighted_dsu {",
-      "  public:",
-      "    weighted_dsu() : _n(0) {}",
-      "    weighted_dsu(int n) : _n(n), parent_or_size(n, -1), diff_weight(n, 0) {}",
-      "",
-      "    // a から見て b が重み w になるように結合する",
-      "    int merge(int a, int b, T w) {",
-      "        assert(0 <= a && a < _n);",
-      "        assert(0 <= b && b < _n);",
-      "        int x = leader(a), y = leader(b);",
-      "        if (x == y) return x;",
-      "",
-      "        // 根同士の相対的な重みを計算",
-      "        T w_x_to_y = w + weight(a) - weight(b);",
-      "",
-      "        if (-parent_or_size[x] < -parent_or_size[y]) {",
-      "            std::swap(x, y);",
-      "            w_x_to_y = -w_x_to_y;",
-      "        }",
-      "        parent_or_size[x] += parent_or_size[y];",
-      "        parent_or_size[y] = x;",
-      "        diff_weight[y] = w_x_to_y;",
-      "        return x;",
-      "    }",
-      "",
-      "    bool same(int a, int b) {",
-      "        assert(0 <= a && a < _n);",
-      "        assert(0 <= b && b < _n);",
-      "        return leader(a) == leader(b);",
-      "    }",
-      "",
-      "    int leader(int a) {",
-      "        assert(0 <= a && a < _n);",
-      "        if (parent_or_size[a] < 0) return a;",
-      "        int r = leader(parent_or_size[a]);",
-      "        diff_weight[a] += diff_weight[parent_or_size[a]]; // 経路圧縮のついでに重みを累積",
-      "        return parent_or_size[a] = r;",
-      "    }",
-      "",
-      "    // 根からの絶対的な重みを取得する関数",
-      "    T weight(int a) {",
-      "        assert(0 <= a && a < _n);",
-      "        leader(a); // 事前に経路圧縮",
-      "        return diff_weight[a];",
-      "    }",
-      "",
-      "    // aとbが連結のとき aから見たbの相対的な距離を返す",
-      "    T diff(int a, int b) {",
-      "        assert(same(a, b));",
-      "        return weight(b) - weight(a);",
-      "    }",
-      "",
-      "    long long size(int a) {",
-      "        assert(0 <= a && a < _n);",
-      "        return (long long)(-parent_or_size[leader(a)]);",
-      "    }",
-      "",
-      "    std::vector<std::vector<int>> groups() {",
-      "        std::vector<int> leader_buf(_n), group_size(_n);",
-      "        for (int i = 0; i < _n; i++) {",
-      "            leader_buf[i] = leader(i);",
-      "            group_size[leader_buf[i]]++;",
-      "        }",
-      "        std::vector<std::vector<int>> result(_n);",
-      "        for (int i = 0; i < _n; i++) {",
-      "            result[i].reserve(group_size[i]);",
-      "        }",
-      "        for (int i = 0; i < _n; i++) {",
-      "            result[leader_buf[i]].push_back(i);",
-      "        }",
-      "        result.erase(",
-      "            std::remove_if(result.begin(), result.end(),",
-      "                           [&](const std::vector<int>& v) { return v.empty(); }),",
-      "            result.end());",
-      "        return result;",
-      "    }",
-      "",
-      "  private:",
-      "    int _n;",
-      "    std::vector<int> parent_or_size;",
-      "    std::vector<T> diff_weight; // 親ノードとの相対的な重みを記録",
-      "};",
-      "}",
-      "template <class T> using wdsu = atcoder::weighted_dsu<T>;",
-	  "// wdsu<ll> uf(n)",
-	  "// diff(x,y)  xから見たyの位置",
-	  "// weight(x)  根からxの距離",
-	  "// merge(x,y,w)  xから見てyの位置がwになるように結合"
-    ],
-    "description": "AtCoder Library (ACL) スタイルに準拠した重み付きUnion-Find"
-  },
-
 
 
 
@@ -1072,7 +1097,7 @@
       "    }",
       "};",
       "",
-      "// fast_set S(n)  [0,n)のset",
+      "// fast_set S(n)  [0,n)のset<int>",
       "// contains(a)  aを含むか?",
       "// next(a)  a 以上の最小の要素（存在しなければ N ）",
       "// prev(a)  a 以下の最大の要素（存在しなければ -1 ）",
@@ -1081,6 +1106,151 @@
     ],
     "description": "fastset"
   },
+
+
+
+
+
+
+
+
+
+
+  "prefix tree": {
+    "prefix": "Trie",
+    "body": [
+      "",
+      "template<unsigned int char_size, unsigned int base>",
+      "struct Trie {",
+      "    using uint = unsigned int;",
+      "    using uchar = unsigned char;",
+      "    using ll = long long;",
+      "    ",
+      "    struct TrieNode {",
+      "        array<int,char_size> next;  // 次の文字のインデックス",
+      "        uint accept;                // このノードを終端とする文字列の数",
+      "        uint count;                 // このノードを通る接頭辞を持つ文字列の個数",
+      "    ",
+      "        TrieNode() : accept(0), count(0) {",
+      "            next.fill(-1);",
+      "        }",
+      "    };",
+      "",
+      "",
+      "    vector<TrieNode> nodes;",
+      "    Trie() : nodes(1,TrieNode()) {}",
+      "",
+      "    // 文字列をTrie木に追加する",
+      "    void insert(const string& word){",
+      "        uint now = 0;",
+      "        nodes[0].count++;",
+      "        for(uchar c:word){",
+      "            uint id = c-base;",
+      "            assert(id < char_size);",
+      "            if(nodes[now].next[id] == -1){",
+      "                nodes[now].next[id] = nodes.size();",
+      "                nodes.push_back(TrieNode());",
+      "            }",
+      "            now = nodes[now].next[id];",
+      "            nodes[now].count++;",
+      "        }",
+      "        nodes[now].accept++;",
+      "    }",
+      "",
+      "    // 指定した文字列が存在する個数",
+      "    ll search(const string& word){",
+      "        uint now = 0;",
+      "        for(uchar c:word){",
+      "            uint id = c-base;",
+      "            assert(id < char_size);",
+      "            if(nodes[now].next[id] == -1) return 0;",
+      "            now = nodes[now].next[id];",
+      "        }",
+      "        return nodes[now].accept;",
+      "    }",
+      "",
+      "    // 指定した接頭辞（prefix）を持つ文字列の個数",
+      "    ll count_prefix(const string& prefix){",
+      "        uint now = 0;",
+      "        for(uchar c:prefix){",
+      "            uint id = c-base;",
+      "            assert(id < char_size);",
+      "            if(nodes[now].next[id] == -1) return 0;",
+      "            now = nodes[now].next[id];",
+      "        }",
+      "        return nodes[now].count;",
+      "    }",
+      "",
+      "    // 指定した文字列を1つ削除する",
+      "    bool erase(const string& word){",
+      "        if(search(word) == 0) return false;",
+      "        uint now = 0;",
+      "        nodes[0].count--;",
+      "        for(uchar c:word){",
+      "            uint id = c-base;",
+      "            now = nodes[now].next[id];",
+      "            nodes[now].count--;",
+      "        }",
+      "        nodes[now].accept--;",
+      "        return true;",
+      "    }",
+      "",
+      "    // 保存されている文字列の個数(重複あり)",
+      "    ll size()const{",
+      "        return nodes[0].count;",
+      "    }",
+      "",
+      "    // 指定した文字列より辞書順で小さいものの個数",
+      "    ll order(const string& word)const{",
+      "        uint now = 0;",
+      "        ll res = 0;",
+      "        for(uchar c:word){",
+      "            res += nodes[now].accept;",
+      "            uint id = c-base;",
+      "            assert(id < char_size);",
+      "            for(uint i = 0; i < id; i++){",
+      "                if(nodes[now].next[i] == -1) continue;",
+      "                res += nodes[nodes[now].next[i]].count;",
+      "            }",
+      "            if(nodes[now].next[id] == -1) return res;",
+      "            now = nodes[now].next[id];",
+      "        }",
+      "        return res;",
+      "    }",
+      "",
+      "    // word自身を除いた最長共通部分接頭辞の長さ",
+      "    ll LCP(const string& word)const{",
+      "        assert(search(word) > 0);",
+      "        uint now = 0;",
+      "        ll res = 0;",
+      "        for(uchar c:word){",
+      "            uint id = c-base;",
+      "            if(nodes[nodes[now].next[id]].count == 1) return res;",
+      "            res++;",
+      "            now = nodes[now].next[id];",
+      "        }",
+      "        return res;",
+      "    }",
+      "};",
+      "",
+      "// Trie<26,'a'> prefix_tree",
+      "// S:Trieに登録済み, word:任意の文字列",
+      "// insert(word)        wordを登録",
+      "// search(word)        wordの個数",
+      "// count_prefix(word)  wordを接頭辞として持つような文字列の個数",
+      "// erase(word)         wordが存在すればそれを1つ削除しtrueを返す",
+      "// size()              保存されている文字列の個数(重複あり)",
+      "// order(word)         辞書順でwordより小さい文字列の個数",
+      "// LCP(S)              Sの最長共通部分接頭辞の長さ"
+    ],
+    "description": "Trie木"
+  },
+
+
+
+
+
+
 
 
 
@@ -1096,13 +1266,6 @@
     ],
     "description": "factorial"
   },
-
-
-
-
-
-
-
 
   "temp": {
     "prefix": "temp",
@@ -1123,9 +1286,6 @@
     "description": "temp"
   },
 
-
-
-
   "Vector Begin End": {
       "prefix": "all",
       "body": [
@@ -1133,7 +1293,7 @@
       ],
       "description": "Expand to begin and end iterators"
   },
-  
+
   "testcases": {
     "prefix": "testcases",
     "body": [
@@ -1159,8 +1319,6 @@
     ],
     "description": "erase unique"
   },
-
-
 
   "graph": {
     "prefix": "graph_input",
