@@ -17,7 +17,10 @@ int main(){
         while(r-l > 1){
             ll d = (l+r)/2;
             ll tmp = n;
-            rep(i,m) tmp /= a+i*d;
+            rep(i,m){
+                tmp /= a+i*d;
+                if(tmp == 0) break;
+            }
             if(tmp > 0) l = d;
             else r = d;
         }
