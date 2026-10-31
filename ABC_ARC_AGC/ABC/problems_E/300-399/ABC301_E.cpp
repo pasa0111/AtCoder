@@ -1,0 +1,78 @@
+// my library: https://github.com/pasa0111/AtCoder/blob/main/.vscode/cpp.code-snippets
+#include <bits/stdc++.h> /*  ^__________^  */
+using namespace std; using ll = long long; using ull = unsigned long long; using ld = long double; constexpr char el = '\n'; [[maybe_unused]] constexpr ll inf = 1000001001; [[maybe_unused]] constexpr ll INF = 4000000000000000000; [[maybe_unused]] constexpr ll DX[8] = {-1,1,0,0,-1,-1,1,1}; [[maybe_unused]] constexpr ll DY[8] = {0,0,-1,1,-1,1,-1,1};
+#define rep(i,n) for (ll i = 0; i < (ll)(n); i++)
+template <typename T> vector<T> make_vector(size_t a, T b) {return vector<T>(a, b); } template <typename... Ts> auto make_vector(size_t a, Ts... ts) {return vector<decltype(make_vector(ts...))>(a,make_vector(ts...));} template <ranges::range R> requires(!is_convertible_v<R, string_view>) ostream &operator<<(ostream &os, const R &a); template <typename T,typename U> ostream &operator<<(ostream &os,const pair<T,U> &p){os << "(" << p.first << ", " << p.second << ")"; return os;} template <typename T, typename U> istream &operator>>(istream &is, pair<T, U> &p){is >> p.first >> p.second; return is;} template <typename T> vector<T> rotate(vector<T> &S){assert(!S.empty()); int h = S.size(), w = S[0].size(); vector<T> res(w); for (int i = 0; i < w; i++) res[i].resize(h); for (int i = 0; i < w; i++) {for(int j = 0; j < h; j++) {res[i][j] = S[j][w - 1 - i];}} return res;} template <typename T> T &SORT(T &a){sort(a.begin(),a.end()); return a;} template <typename T> T &REVERSE(T &a){reverse(a.begin(), a.end()); return a;} template <ranges::range R> requires(!is_convertible_v<R, string_view>) ostream &operator<<(ostream &os, const R &a) {if constexpr (is_same_v<ranges::range_value_t<R>, string>) {bool f = true; for (const auto &x : a) {if (!f) os << '\n'; f = false; os << x; } return os;} else{os << "{"; bool f = 1; for (const auto &x:a) {if (!f) os << ","; f = 0; os << x;} return os << "}";}}
+template <typename T> using PLqueue=priority_queue<T>; template <typename T> using PGqueue=priority_queue<T,vector<T>,greater<T>>; template <typename T> vector<vector<T>> &sumvec2d(vector<vector<T>> &A) {ll h = A.size(); if(h == 0) return A; ll w = A[0].size(); for(ll i = 0; i < h; i++) for(ll j = 1; j < w; j++) A[i][j] += A[i][j-1]; for(ll j = 0; j < w; j++) for(ll i = 1; i < h; i++) A[i][j] += A[i - 1][j]; return A;} pair<ll, ll> dirvec(pair<ll, ll> a, pair<ll, ll> b) {ll dx = a.first-b.first, dy = a.second-b.second; if(dx == 0 && dy == 0) return pair(0,0); else if(dx == 0) return pair(0,1); else if(dy == 0) return pair(1, 0); if(dx < 0){dx = -dx; dy = -dy;} ll g = gcd(dx,abs(dy)); dx /= g, dy /= g; return pair(dx,dy);} template <typename T> T& vecin(T& a){for(auto& x:a) cin >> x; return a;} template <typename T> T &RSORT(T &a){sort(a.rbegin(), a.rend()); return a;} template <typename T> vector<T> &sumvec(vector<T> &a){ll b = a.size(); for(ll i = 1; i < b; i++) a[i] += a[i-1]; return a;} template <typename T,typename U> bool chmax(T& a, U b){if(a < b){a = b; return true;} return false;}
+template <typename T> T square(T a){return a*a;}  struct set_stage{set_stage(){ios::sync_with_stdio(false); cin.tie(nullptr); cout << fixed << setprecision(20);}}set_stage_0w0; template <typename T, typename U> pair<T, U> operator+(const pair<T, U> &a, const pair<T, U> &b) {return {a.first+b.first, a.second+b.second};} template <typename T, typename U> pair<T, U> operator-(const pair<T, U> &a, const pair<T, U> &b){return {a.first - b.first, a.second - b.second};} template <typename T> auto intpow(T a, ll b){using Ret = std::conditional_t<std::is_integral_v<T> && (sizeof(T) < sizeof(ll)), ll, T>; assert(b >= 0); Ret res = 1; Ret base = a; while(b){if(b & 1) res *= base; b >>= 1; if(!b)break; base *= base;} return res;} ll intpow(ll a,ll b,ll c){assert(b >= 0 && c > 0); ll res = 1%c; ll base = a%c; while(b){if(b & 1) res = (res*base)%c; b >>= 1; if(!b) break; base = (base*base)%c;} return res;} template <typename T,typename U> bool chmin(T& a, U b){if(a > b){a = b; return true;} return false;} template <typename T, typename U> auto sqabs(pair<T,U> a){return a.first*a.first + a.second*a.second;}
+void yesno(bool b){
+    cout << (b ? "Yes" : "No") << el;
+}
+
+/*
+
+D[i][j][取ったお菓子の情報(2進数)]?
+計算量多い
+
+S -> お菓子1 -> お菓子2 -> ... -> G
+お菓子間の距離とかが分かれば良さそう
+
+*/
+
+int main(){
+    ll h,w,t; cin >> h >> w >> t;
+    vector<string> S(h); vecin(S);
+    ll m = 2;
+    rep(i,h) m += count(S[i].begin(), S[i].end(), 'o');
+    auto D = make_vector(m,m,inf); // 0:S, m-1:G
+    vector<pair<ll,ll>> P;
+    for(ll i = 0; i < h && ssize(P) < m-2; i++)for(ll j = 0; j < w && ssize(P) < m-2; j++) if(S[i][j] == 'o') P.push_back(pair(i,j));
+    for(ll i = 0; i < h && ssize(P) < m-1; i++)for(ll j = 0; j < w && ssize(P) < m-1; j++) if(S[i][j] == 'S') P.push_back(pair(i,j)), swap(P[0],P.back());
+    for(ll i = 0; i < h && ssize(P) < m; i++)for(ll j = 0; j < w && ssize(P) < m; j++) if(S[i][j] == 'G') P.push_back(pair(i,j));
+    auto get_id = [&](ll x, ll y){
+        ll res = -1;
+        for(ll i = 0; i < m; i++) if(P[i] == pair(x,y)) res = i;
+        return res;
+    };
+    // cout << "P = " << P << el;
+    for(ll s = 0; s < m; s++){
+        queue<pair<ll,ll>> Q;
+        auto V = make_vector(h,w,inf);
+        V[P[s].first][P[s].second] = 0;
+        D[s][s] = 0;
+        Q.push(P[s]);
+        while(!Q.empty()){
+            auto [x,y] = Q.front(); Q.pop();
+            for(ll k = 0; k < 4; k++){
+                ll nx = x+DX[k], ny = y+DY[k];
+                if(!(0 <= nx && nx < h && 0 <= ny && ny < w)) continue;
+                else if(S[nx][ny] == '#') continue;
+                else if(chmin(V[nx][ny],V[x][y]+1)){
+                    Q.push(pair(nx,ny));
+                    if(S[nx][ny] == 'o' || S[nx][ny] == 'S' || S[nx][ny] == 'G'){
+                        D[s][get_id(nx,ny)] = V[nx][ny];
+                    }
+                }
+            }
+        }
+    }
+    // rep(i,m) cout << D[i] << el;
+    auto dp = make_vector(m,1LL<<m,inf); // 現在地,訪れた情報
+    dp[0][0] = 0;
+    dp[0][1] = 0;
+    for(ll info = 1; info < (1<<m); info++){
+        if((info&1) == 0) continue;
+        for(ll now = 0; now < m-1; now++){
+            if(((info>>now)&1) == 0) continue;
+            for(ll to = 1; to < m; to++){
+                if(now == to) continue;
+                else if(((info>>to)&1) == 1) continue;
+                chmin(dp[to][info|(1<<to)],dp[now][info]+D[now][to]);
+            }
+        }
+    }
+    // rep(i,m) cout << dp[i] << el;
+    ll ans = -1;
+    for(ll info = 0; info < (1<<m); info++) if((info&1) == 1 && ((info>>(m-1))&1) == 1 && dp[m-1][info] <= t) chmax(ans,__builtin_popcount(info)-2);
+    cout << ans << el;
+}
