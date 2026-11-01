@@ -10,27 +10,27 @@
 | :--- | :--- | :--- |
 | **型・定数** | `ll`, `ull`, `ld` | `long long`, `unsigned long long`, `long double` の短縮名 |
 | | `el` | 改行文字 `'\n'` |
-| | `inf` / `INF` | `int` 用の無限大 ($\approx 10^9$) / `ll` 用の無限大 ($4 \times 10^{18}$) |
+| | `inf` / `INF` | `int` 用の無限大 / `ll` 用の無限大|
 | | `DX[8]`, `DY[8]` | グリッド探索用の8方向移動ベクトル（先頭4つが上下左右） |
 | **マクロ・型** | `rep(i, n)` | `0` から `n - 1` までのループ |
 | | `PLqueue<T>` / `PGqueue<T>` | 最大値から出る `priority_queue` / 最小値から出る `priority_queue` |
-| **入出力** | `set_stage` | `cin`/`cout` の高速化＆小数出力20桁指定（自動実行） |
+| **入出力** | `set_stage` | `cin`/`cout` の高速化＆小数出力20桁指定|
 | | `vecin(a)` | `vector` や `array` の全要素を一括入力 |
 | | `cout << vec` | 配列・集合の中身を `{a,b,c}` 形式で出力 |
 | | `yesno(b)` | `true` なら `"Yes"`、`false` なら `"No"` を出力 |
 | **配列・グリッド** | `make_vector(...)` | 多次元 `vector` を任意の初期値で生成 |
 | | `SORT(a)` / `RSORT(a)` | 昇順ソート / 降順ソート |
-| | `REVERSE(a)` | 配列や文字列を反転（参照を返す） |
+| | `REVERSE(a)` | 配列や文字列を反転 |
 | | `rotate(S)` | 2次元グリッドを**反時計回りに90度回転**した配列を返す |
 | | `sumvec(a)` / `sumvec2d(A)` | 1次元 / 2次元の配列を **in-place で累積和** に変換 |
-| **比較更新** | `chmax(a, b)` / `chmin(a, b)` | 最大値 / 最小値の更新（更新されたら `true` を返す） |
-| **数学** | `square(a)` | $a^2$（2乗）を返す（`int` 自動拡張対応） |
-| | `intpow(a, b)` | 繰り返し二乗法で $a^b$ を計算（`mint` 対応） |
+| **比較更新** | `chmax(a, b)` / `chmin(a, b)` | 最大値 / 最小値の更新 |
+| **数学** | `square(a)` | $a^2$ を返す |
+| | `intpow(a, b)` | 繰り返し二乗法で $a^b$ を計算 |
 | | `intpow(a, b, c)` | 繰り返し二乗法で $a^b \bmod c$ を計算 |
 | **`pair` 関連** | `cin >> p` / `cout << p` | `pair` の直接入力 / `(first, second)` 形式での出力 |
 | | `p1 + p2` / `p1 - p2` | `pair` 同士の成分ごとの足し算・引き算 |
-| | `sqabs(p)` | `pair` $(x, y)$ に対し $x^2 + y^2$（距離の2乗）を返す |
-| | `dirvec(a, b)` | 2点 `a`, `b` を結ぶ直線の **正規化された方向ベクトル（傾き）** を返す |
+| | `sqabs(p)` | `pair` $(x, y)$ に対し $x^2 + y^2$ を返す |
+| | `dirvec(a, b)` | 2点 `a`, `b` を結ぶ直線の **正規化された方向ベクトル** を返す |
 
 ---
 
