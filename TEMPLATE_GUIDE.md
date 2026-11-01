@@ -165,7 +165,7 @@ ostream &operator<<(ostream &os, const R &a) {
     }
 }
 ```
-- `.begin()` と `.end()` を持つコンテナの要素を {$x_1,x_2,\dots$} の形式で出力します。ただし、`vector<string>` は$S_1,S_2,...$をこの順で改行区切りで出力します。
+- `.begin()` と `.end()` を持つコンテナの要素 $x_1, x_2, \dots$ を `{x1,x2,...}` の形式で出力します。ただし、`vector<string>` は各文字列 $S_1, S_2, \dots$ をこの順で改行区切りで出力します。
 - [後述](#pair-の入出力-operator-operator)する`pair`の出力と合わせると`map`の出力もできます。
 
 **使用例**
